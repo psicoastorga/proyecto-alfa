@@ -1,0 +1,5 @@
+Crear proyecto react 
+npx create-vite@latest frontend --template react
+
+npm install
+npm install react-router-dom

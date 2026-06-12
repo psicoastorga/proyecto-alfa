@@ -1,0 +1,5 @@
+Para lograr la permanencia de la autenticación de usuarios en las diferentes paginas se usa SWT
+
+1° se instala librerias
+npm install jsonwebtoken
+

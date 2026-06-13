@@ -32,13 +32,25 @@ app.get('/', (req, res) => {
 // RUTA DE REGISTRO
 app.post('/register', async (req, res) => {
   try {
-    const { nombre, email, password, rol } = req.body;
+    const { nombre, email, password } = req.body;
     
     // Encriptar
     const hashedPassword = await bcrypt.hash(password, 10);
     
+    // Validar mail existente 
+    const existingUser = await User.findOne({
+    email
+      });
+
+    if (existingUser) {
+      return res.status(400).json({
+        error: 'Email ya registrado'
+    });
+}
+    
+    
     // Crear
-    const newUser = new User({ nombre, email, password: hashedPassword, rol });
+    const newUser = new User({ nombre, email, password: hashedPassword });
     await newUser.save();
     
     res.status(201).json({ message: 'Usuario creado con éxito' });
@@ -102,13 +114,59 @@ app.post('/login', async (req, res) => {
 });
 
 //RUTA PERFIL 
-app.get('/perfil', auth, (req, res) => {
+app.get('/perfil', auth, async (req, res) => {
 
-  res.json({
-    usuario: req.user
-  });
+    try {
+
+        const user = await User.findById(req.user.id)
+            .select('-password');
+
+        res.json(user);
+
+    } catch (error) {
+
+        res.status(500).json({
+            error: 'Error al obtener perfil'
+        });
+
+    }
 
 });
+
+// ACTUALIZAR PERFIL
+app.put('/perfil', auth, async (req, res) => {
+
+    try {
+
+        const { nombre, email } = req.body;
+
+        const user = await User.findByIdAndUpdate(
+            req.user.id,
+            {
+                nombre,
+                email
+            },
+            {
+                new: true
+            }
+        );
+
+        res.json({
+            message: 'Perfil actualizado',
+            user
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            error: 'Error al actualizar perfil'
+        });
+
+    }
+
+});
+
+
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);

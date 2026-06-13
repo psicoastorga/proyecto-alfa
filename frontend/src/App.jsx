@@ -2,6 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
+import Register from './pages/Register';
 import './App.css'
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         </button>
       </section>
 
+      <Register />
       <div className="ticks"></div>
 
       <section id="next-steps">

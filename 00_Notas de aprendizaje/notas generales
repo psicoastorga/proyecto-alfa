@@ -1,3 +1,55 @@
 Backend: Express + MongoDB + JWT.
 Frontend: React + Bootstrap.
 Comunicación mediante API REST.
+
+
+
+//conectar React con tu backend
+npm install react-router-dom axios bootstrap
+
+//en main.js
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+//Crear estructura mínima
+    src/
+
+    components/
+        Navbar.jsx
+
+    pages/
+        Login.jsx
+        Register.jsx
+        Profile.jsx
+
+    services/
+        authService.js
+
+    App.jsx
+
+
+
+//Crear authService
+
+src/services/authService.js
+
+import axios from 'axios';
+
+const API = 'http://localhost:3000';
+
+export const register = async (userData) => {
+    const response = await axios.post(
+        `${API}/register`,
+        userData
+    );
+
+    return response.data;
+};
+
+export const login = async (userData) => {
+    const response = await axios.post(
+        `${API}/login`,
+        userData
+    );
+
+    return response.data;
+};
